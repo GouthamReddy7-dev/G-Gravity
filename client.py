@@ -12,7 +12,8 @@ load_dotenv()
 API_KEY=os.getenv("API_KEY")
 
 curr_dir=os.path.dirname(os.path.abspath(__file__))
-server_dir=os.path.join(curr_dir,"servers.py")
+server_dir=os.path.join(curr_dir,"server.py")
+GITHUB_ACCESS_TOKEN=os.getenv("GITHUB_ACCESS_TOKEN")
 print(curr_dir)
 print(server_dir)
 client=MultiServerMCPClient({
@@ -20,7 +21,15 @@ client=MultiServerMCPClient({
         "command":"python",
         "args":[server_dir],
         "transport":"stdio"
-    }
+    },
+            "github": {
+            "transport": "streamable_http",
+            "url": "https://api.githubcopilot.com/mcp/",
+            "headers": {
+                "Authorization": f"Bearer {GITHUB_ACCESS_TOKEN}"
+            },
+        }
+
 })
 
 
@@ -82,3 +91,4 @@ async def main():
 
 asyncio.run(main())
 
+#..\mcpenv\scripts\activate   to run
